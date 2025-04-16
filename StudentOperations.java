@@ -129,4 +129,44 @@ public class StudentOperations {
             System.out.println("SQL Error: " + e.getMessage());
         }
     }
+    // Update student
+    public static void updateStudent() {
+        try {
+            Connection con = DriverManager.getConnection(URL, USER, PASSWORD);
+            Scanner scanner = new Scanner(System.in);
+
+            System.out.print("Enter PRN of student to update: ");
+            int prn = scanner.nextInt();
+            scanner.nextLine();
+
+            System.out.print("Enter New Name: ");
+            String name = scanner.nextLine();
+
+            System.out.print("Enter New Branch: ");
+            String branch = scanner.nextLine();
+
+            System.out.print("Enter New Batch: ");
+            String batch = scanner.nextLine();
+
+            System.out.print("Enter New CGPA: ");
+            float cgpa = scanner.nextFloat();
+
+            PreparedStatement stmt = con.prepareStatement("UPDATE student SET Name=?, Branch=?, Batch=?, CGPA=? WHERE PRN=?");
+            stmt.setString(1, name);
+            stmt.setString(2, branch);
+            stmt.setString(3, batch);
+            stmt.setFloat(4, cgpa);
+            stmt.setInt(5, prn);
+
+            int updated = stmt.executeUpdate();
+            System.out.println(updated > 0 ? "Student updated." : " No student found with that PRN.");
+
+            stmt.close();
+            con.close();
+        } catch (SQLException e) {
+            System.out.println("SQL Error: " + e.getMessage());
+        }
+    }
+
+    
     
