@@ -37,7 +37,7 @@ public class StudentOperations {
             stmt.setFloat(5, cgpa);
 
             int rowsInserted = stmt.executeUpdate();
-            System.out.println(rowsInserted > 0 ? "✅ Student record inserted." : "❌ Insert failed.");
+            System.out.println(rowsInserted > 0 ? "Student record inserted." : "Insert failed.");
 
             stmt.close();
             con.close();
@@ -66,4 +66,35 @@ public class StudentOperations {
             System.out.println("SQL Error: " + e.getMessage());
         }
     }
+    // Search student by PRN
+    public static void searchByPRN() {
+        try {
+            Connection con = DriverManager.getConnection(URL, USER, PASSWORD);
+            Scanner scanner = new Scanner(System.in);
+
+            System.out.print("Enter PRN to search: ");
+            int prn = scanner.nextInt();
+
+            PreparedStatement stmt = con.prepareStatement("SELECT * FROM student WHERE PRN = ?");
+            stmt.setInt(1, prn);
+
+            ResultSet rs = stmt.executeQuery();
+
+            if (rs.next()) {
+                System.out.println("Found: Name = " + rs.getString("Name") +
+                        ", Branch = " + rs.getString("Branch") +
+                        ", Batch = " + rs.getString("Batch") +
+                        ", CGPA = " + rs.getFloat("CGPA"));
+            } else {
+                System.out.println(" No student found with PRN: " + prn);
+            }
+
+            rs.close();
+            stmt.close();
+            con.close();
+        } catch (SQLException e) {
+            System.out.println("SQL Error: " + e.getMessage());
+        }
+    }
+    
     
