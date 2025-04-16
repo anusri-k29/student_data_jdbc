@@ -167,6 +167,28 @@ public class StudentOperations {
             System.out.println("SQL Error: " + e.getMessage());
         }
     }
+    // Delete student
+    public static void deleteStudent() {
+        try {
+            Connection con = DriverManager.getConnection(URL, USER, PASSWORD);
+            Scanner scanner = new Scanner(System.in);
+
+            System.out.print("Enter PRN to delete: ");
+            int prn = scanner.nextInt();
+
+            PreparedStatement stmt = con.prepareStatement("DELETE FROM student WHERE PRN = ?");
+            stmt.setInt(1, prn);
+
+            int deleted = stmt.executeUpdate();
+            System.out.println(deleted > 0 ? "✅ Student deleted." : "❌ No student found with that PRN.");
+
+            stmt.close();
+            con.close();
+        } catch (SQLException e) {
+            System.out.println("SQL Error: " + e.getMessage());
+        }
+    }
+}
 
     
     
